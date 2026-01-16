@@ -26,7 +26,7 @@
         <module>yudao-module-crm</module>
         <!-- 友情提示：基于 Spring AI 实现 LLM 大模型的接入，需要使用 JDK17 版本，详细可见 https://doc.iocoder.cn/ai/build/ -->
 <!--        <module>yudao-module-ai</module>-->
-        <module>yudao-module-iot</module>
+<!--        <module>yudao-module-iot</module>-->
     </modules>
 
     <name>${project.artifactId}</name>
@@ -49,13 +49,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!-- dependencyManagement用于管理版本依赖，还需要在子模块只声明依赖、不声明版本 -->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>cn.iocoder.cloud</groupId>
                 <artifactId>yudao-dependencies</artifactId>
                 <version>${revision}</version>
+                <!-- type=pom 表示依赖的是一个 POM 文件而不是 jar，不会有 class，也不会被打进 classpath，它只是一个“描述文件”，默认是jar -->
                 <type>pom</type>
+                <!-- scope=import 表示将该 POM 中定义的 dependencyManagement 合并到当前项目中，只用于统一管理依赖版本，不会实际引入任何依赖代码，常用于 BOM 机制。 -->
                 <scope>import</scope>
             </dependency>
         </dependencies>

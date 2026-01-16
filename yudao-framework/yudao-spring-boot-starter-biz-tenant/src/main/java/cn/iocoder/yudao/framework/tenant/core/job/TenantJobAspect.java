@@ -35,6 +35,12 @@ public class TenantJobAspect {
 
     private final TenantFrameworkService tenantFrameworkService;
 
+    /**
+     * 多租户 Job 处理器的切面
+     * 拦截标注了 @TenantJob 注解的方法，让它在每个租户上下文下分别执行一次
+     * @param joinPoint 切点
+     * @param tenantJob 多租户 Job 注解
+     */
     @Around("@annotation(tenantJob)")
     public void around(ProceedingJoinPoint joinPoint, TenantJob tenantJob) {
         // 获得租户列表

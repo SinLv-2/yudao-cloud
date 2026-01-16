@@ -7,6 +7,7 @@ import cn.iocoder.yudao.framework.test.core.ut.BaseDbUnitTest;
 import cn.iocoder.yudao.module.bpm.controller.admin.definition.vo.form.BpmFormSaveReqVO;
 import cn.iocoder.yudao.module.bpm.controller.admin.definition.vo.form.BpmFormPageReqVO;
 import cn.iocoder.yudao.module.bpm.dal.dataobject.definition.BpmFormDO;
+import cn.iocoder.yudao.module.bpm.dal.mysql.category.BpmCategoryMapper;
 import cn.iocoder.yudao.module.bpm.dal.mysql.definition.BpmFormMapper;
 import cn.iocoder.yudao.module.bpm.service.definition.dto.BpmFormFieldRespDTO;
 import org.junit.jupiter.api.Test;

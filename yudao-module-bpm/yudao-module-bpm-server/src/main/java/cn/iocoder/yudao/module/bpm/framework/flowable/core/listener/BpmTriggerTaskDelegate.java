@@ -31,7 +31,7 @@ public class BpmTriggerTaskDelegate implements JavaDelegate {
     public static final String BEAN_NAME = "bpmTriggerTaskDelegate";
 
     @Resource
-    private List<BpmTrigger> triggers;
+    private List<BpmTrigger> triggers; // 策略模式
 
     private final EnumMap<BpmTriggerTypeEnum, BpmTrigger> triggerMap = new EnumMap<>(BpmTriggerTypeEnum.class);
 
