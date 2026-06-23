@@ -42,6 +42,7 @@ import org.flowable.engine.HistoryService;
 import org.flowable.engine.ManagementService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
+import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.runtime.ActivityInstance;
 import org.flowable.engine.runtime.Execution;
@@ -79,7 +80,7 @@ import static cn.iocoder.yudao.module.bpm.framework.flowable.core.util.BpmnModel
  * @author jason
  */
 @Slf4j
-@Service
+@Service("bpmTaskService")
 public class BpmTaskServiceImpl implements BpmTaskService {
 
     @Resource
@@ -1585,6 +1586,13 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         // 若存在直接触发接收任务，执行后续节点
         FlowableUtils.execute(execution.getTenantId(),
                 () -> runtimeService.trigger(execution.getId()));
+    }
+
+    @Override
+    public String getTaskIdByExpressionValue(DelegateExecution execution) {
+        String taskId = execution.getId();
+        log.info("[getTaskIdByExpressionValue] 获取任务ID，任务ID：{}", taskId);
+        return taskId;
     }
 
     /**

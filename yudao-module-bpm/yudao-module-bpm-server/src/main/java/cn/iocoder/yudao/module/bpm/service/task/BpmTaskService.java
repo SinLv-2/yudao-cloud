@@ -5,6 +5,7 @@ import cn.iocoder.yudao.framework.common.util.collection.CollectionUtils;
 import cn.iocoder.yudao.module.bpm.controller.admin.task.vo.task.*;
 import cn.iocoder.yudao.module.bpm.enums.definition.BpmUserTaskTimeoutHandlerTypeEnum;
 import org.flowable.bpmn.model.UserTask;
+import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskInfo;
@@ -320,5 +321,13 @@ public interface BpmTaskService {
      * @param taskDefineKey     任务 Key
      */
     void triggerTask(String processInstanceId, String taskDefineKey);
+
+    /**
+     * 通过表达式的方式获取任务的任务Id
+     *
+     * @param execution 执行实例
+     * @return 任务编号表达式的值
+     */
+    String getTaskIdByExpressionValue(DelegateExecution execution);
 
 }

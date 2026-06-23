@@ -1,11 +1,23 @@
 package cn.iocoder.yudao.module.bpm.framework.flowable.core.listener.demo.exection;
 
 import lombok.extern.slf4j.Slf4j;
+import org.flowable.bpmn.model.FieldExtension;
+import org.flowable.common.engine.api.delegate.Expression;
+import org.flowable.common.engine.impl.el.ExpressionManager;
+import org.flowable.common.engine.impl.el.JuelExpression;
+import org.flowable.engine.ProcessEngine;
+import org.flowable.engine.ProcessEngines;
 import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.delegate.JavaDelegate;
+import org.flowable.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.flowable.engine.impl.el.FixedValue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
+ * start 事件的执行监听器
  * 类型为 class 的 ExecutionListener 监听器示例(JavaDelegate 版本)
  *
  * ExecutionListener需要使用ExecutionListener的实现类
@@ -18,13 +30,32 @@ import org.flowable.engine.impl.el.FixedValue;
 @Slf4j
 public class DemoDelegateClassExecutionListener implements JavaDelegate {
 
-//    private FixedValue age;
+    private FixedValue age; // 直接注入
+    private Expression sex; // 表达式注入，从流程变量中获取
+    private Expression taskId; // 表达式注入，从 Spring 容器中获取
 
     @Override
     public void execute(DelegateExecution execution) {
-//        log.info((String) age.getValue(null));
-        log.info("[execute][execution({}) 被调用！变量有：{}]", execution.getId(),
-                execution.getCurrentFlowableListener().getFieldExtensions());
+        // 获取监听器中的注入字段
+        List<FieldExtension> fieldExtensions = execution.getCurrentFlowableListener().getFieldExtensions();
+        for (FieldExtension fieldExtension : fieldExtensions) {
+            String fieldName = fieldExtension.getFieldName();
+            Object fieldValue = null;
+            if (fieldExtension.getStringValue() != null) {
+                // 字符串值
+                fieldValue = fieldExtension.getStringValue();
+            } else if (fieldExtension.getExpression() != null) {
+                // 表达式值
+                ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+                ProcessEngineConfigurationImpl config =
+                        (ProcessEngineConfigurationImpl) processEngine.getProcessEngineConfiguration();
+                ExpressionManager expressionManager = config.getExpressionManager();
+                // ⭐ 使用 ExpressionManager 创建 Expression 对象
+                JuelExpression expression = (JuelExpression) expressionManager.createExpression(fieldExtension.getExpression());
+                fieldValue = expression.getValue(execution);
+            }
+            log.info("[execute][注入字段：{}={}]", fieldName, fieldValue);
+        }
     }
 
 }

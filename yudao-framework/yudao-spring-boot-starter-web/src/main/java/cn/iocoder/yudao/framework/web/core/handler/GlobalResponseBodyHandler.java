@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 /**
  * 全局响应结果（ResponseBody）处理器
+ * 可以对对接口响应体统一处理(主要是针对没有经过统一封装返回的情况，这部分功能可参考https://blog.csdn.net/qq_20957669/article/details/122405812)
  *
  * 不同于在网上看到的很多文章，会选择自动将 Controller 返回结果包上 {@link CommonResult}，
  * 在 onemall 中，是 Controller 在返回时，主动自己包上 {@link CommonResult}。
